@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class UserDao {
@@ -41,19 +43,16 @@ public class UserDao {
         return user;
     }
 
-    public User selectByUid(String uid){
-        final User user = new User();
+    public List<User>  selectByUid(String uid){
+        final List<User> userList=new ArrayList<>();
         String sql= "SELECT * FROM user WHERE uid=?";
         jdbcTemplate.query(sql, new Object[]{uid}, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
-                user.setUid(rs.getString(1));
-                user.setName(rs.getString(2));
-                user.setDid(rs.getString(3));
-                user.setPassword(rs.getString(4));
+               userList.add(new User(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)));
             }
         });
-        return user;
+        return userList;
     }
 
     public User selectByName(String name){
@@ -70,4 +69,5 @@ public class UserDao {
         });
         return user;
     }
+
 }

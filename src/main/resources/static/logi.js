@@ -5,8 +5,8 @@ $(function () {
         var b=document.getElementById("password").value;
         $.ajax({
             url: "/login",
-            async: false,
             type: 'POST',
+            async: true,
             dataType:"text",
             data: {
                     'username': a.toString(),
@@ -18,14 +18,17 @@ $(function () {
             success: function (data) {
                 if(data=="success"){
                     alert(data)
-                    alert("登陆成功")
+                    window.location.href = "./hello.html"
                 }else{
                     alert("error");
                 }
             },
             error: function (data) {
-                alert(data.toString())
+                alert("error");
             }
         });
     })
 });
+function dd() {
+
+}

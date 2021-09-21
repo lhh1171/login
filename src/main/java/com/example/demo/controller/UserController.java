@@ -1,11 +1,16 @@
 package com.example.demo.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.example.demo.entity.User;
-import com.example.demo.service.UserService;
+
 import com.example.demo.service.UserServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -22,6 +27,13 @@ public class UserController {
         return "该用户验证成功";
     }
 
+    @PostMapping(value = "/selectbyid")
+    public @ResponseBody List<User> selectbyid(String uid){
+        List<User> userList = userService.selectByuid(uid);
+//        JSONArray array= JSONArray.parseArray(JSON.toJSONString(userList));
+//        return array;
+        return userList;
+    }
 
     @PostMapping(value = "/login")
     public @ResponseBody String login(@RequestParam("username") String username,@RequestParam("password")  String password){

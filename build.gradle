@@ -19,6 +19,9 @@ dependencies {
     testCompile("junit:junit:4.12")
     compile("org.springframework.boot:spring-boot-starter-parent:2.3.1.RELEASE")
     compile("org.springframework.boot:spring-boot-starter:2.3.1.RELEASE")
+    // https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
+
     //lombok
     compile("org.projectlombok:lombok:1.18.8")
     // https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons
