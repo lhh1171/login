@@ -24,13 +24,13 @@ public class FriendsDao {
         return jdbcTemplate.update("delete from friends where fid=?",fid);
     }
 
-    public List<String> selectFriendByUid(String uid){
-        final List<String> fflist=new ArrayList<>();
+    public List<Friends> selectFriendByUid(String uid){
+        final List<Friends> fflist=new ArrayList<>();
         String sql= "SELECT mid FROM message WHERE fid=?";
         jdbcTemplate.query(sql, new Object[]{uid}, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
-                fflist.add(rs.getString(1));
+                fflist.add(new Friends(rs.getString(1),rs.getString(2),rs.getString(3)));
             }
         });
         return fflist;

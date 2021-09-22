@@ -1,5 +1,4 @@
 $(function () {
-
     $("#submit").on('click', function () {
         var a=document.getElementById("username").value;
         var b=document.getElementById("password").value;

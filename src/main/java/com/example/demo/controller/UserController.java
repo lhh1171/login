@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public @ResponseBody String login(@RequestParam("username") String username,@RequestParam("password")  String password){
+    public @ResponseBody String login(String username,@RequestParam("password")  String password){
         if (userService.findUserByNameAndPassword(username,password).getUid()!=null){
             System.out.println("sssss");
             return "success";

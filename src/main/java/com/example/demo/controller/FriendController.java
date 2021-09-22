@@ -27,7 +27,7 @@ public class FriendController {
 
     @PostMapping(value = "/selectFriends")
     @ResponseBody
-    public List<String> selectFriends(String uid){
+    public List<Friends> selectFriends(String uid){
         return friendsService.selectFriendByIUid(uid);
     }
 

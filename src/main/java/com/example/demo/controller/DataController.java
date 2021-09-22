@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 public class DataController {
 
@@ -23,8 +25,8 @@ public class DataController {
 
     @PostMapping(value = "/selectData")
     @ResponseBody
-    public UserData selectData(String did){
-            return dataservice.selectBydid(did);
+    public List<UserData> selectData(String did){
+        return dataservice.selectBydid(did);
     }
 
 

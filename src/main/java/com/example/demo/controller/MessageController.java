@@ -28,7 +28,7 @@ public class MessageController {
 
     @PostMapping(value = "/findMessage")
     @ResponseBody
-    public List<String> seletedMessage(String fid){
+    public List<Message> seletedMessage(String fid){
         return messageService.selectMessageByfid(fid);
     }
 

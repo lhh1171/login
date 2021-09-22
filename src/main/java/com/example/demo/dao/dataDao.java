@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class dataDao {
@@ -19,18 +21,16 @@ public class dataDao {
         return jdbcTemplate.update("delete from data where did=?",data.getDid());
     }
 
-    public UserData selectBydid(String did){
-        final UserData data=new UserData();
+    public List<UserData> selectBydid(String did){
+        final List<UserData> l=new ArrayList<>();
         String sql= "SELECT * FROM data WHERE did=?";
         jdbcTemplate.query(sql, new Object[]{did}, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
-                data.setDid(rs.getString(1));
-                data.setAge(rs.getInt(2));
-                data.setGender(rs.getString(3));
+                l.add(new UserData(rs.getString(1),rs.getInt(2),rs.getString(3)));
             }
         });
-        return data;
+        return l;
     }
 
     public int insertData(UserData data){

@@ -7,6 +7,8 @@ import com.example.demo.entity.UserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DataserviceImpl implements DataService {
     @Autowired
@@ -23,7 +25,7 @@ public class DataserviceImpl implements DataService {
     }
 
     @Override
-    public UserData selectBydid(String did) {
+    public List<UserData> selectBydid(String did) {
         return dataDao.selectBydid(did);
     }
 

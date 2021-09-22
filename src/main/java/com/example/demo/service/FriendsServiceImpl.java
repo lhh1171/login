@@ -24,7 +24,7 @@ public class FriendsServiceImpl implements FriendsService {
     }
 
     @Override
-    public List<String> selectFriendByIUid(String uid) {
+    public List<Friends> selectFriendByIUid(String uid) {
         return friendsDao.selectFriendByUid(uid);
     }
 

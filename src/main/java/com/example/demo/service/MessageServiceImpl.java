@@ -23,7 +23,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<String> selectMessageByfid(String fid) {
+    public List<Message> selectMessageByfid(String fid) {
         return messageDao.selectMessageByfid(fid);
     }
 }

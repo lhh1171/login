@@ -2,7 +2,6 @@ package com.example.demo.support;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +24,12 @@ public class CacheClient {
         }
     }
 
+    public void remove(String key){
+        redisTemplate.delete(key);
+    }
+
     public void putValue(String key, Object o, int expire) {
         if ("".equals(key)) {
-
 //            System.out.println("命中cache");
 //            return "success";
             redisTemplate.opsForValue().set(key, o, expire, TimeUnit.SECONDS);

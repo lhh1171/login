@@ -1,12 +1,14 @@
 package com.example.demo.support;
 
+
 import com.example.demo.annotation.Cache;
+
+import com.example.demo.annotation.CachePut;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -15,13 +17,23 @@ import java.lang.reflect.Method;
 @Aspect
 public class CacheImpl {
 
-    @Autowired
-    private CacheClient cacheClient;
+    private final CacheClient cacheClient;
+
+    public CacheImpl(CacheClient cacheClient) {
+        this.cacheClient = cacheClient;
+    }
 
     @Pointcut("@annotation(com.example.demo.annotation.Cache)")
     public void cacheMethod() {
     }
 
+    @Pointcut("@annotation(com.example.demo.annotation.CachePut)")
+    public void cachePutMethod() {
+    }
+
+    @Pointcut("@annotation(com.example.demo.annotation.CacheDelete)")
+    public void cacheDeleteMethod() {
+    }
 
     @Around("cacheMethod()")
     public Object aroundCache(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -33,37 +45,50 @@ public class CacheImpl {
             return value;
         }
         Object proceed = joinPoint.proceed();
-        //获取切面代理,返回value,返回dao操作返回的对象，被spring代理
         /*从切面值入点获取植入点方法*/
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-
         /*获取切入点方法*/
         Method method = signature.getMethod();
-
         /*获取方法上的值*/
         Cache cache = method.getAnnotation(Cache.class);
         cacheClient.putValue(getKey(joinPoint), proceed, cache.expire());
         return proceed;
     }
 
-//    @Around("cachePutMethod()")
-//    public Object aroundCachePut(ProceedingJoinPoint joinPoint) throws Throwable {
-//        if (joinPoint == null) {
-//            return null;
-//        }
-//        Object proceed = joinPoint.proceed();
-//        /*从切面值入点获取植入点方法*/
-//        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-//        /*获取切入点方法*/
-//        Method method = signature.getMethod();
-//        /*获取方法上的值*/
-//        CachePut cachePut = method.getAnnotation(CachePut.class);
-//        if (cachePut != null) {
-//            cacheClient.putValue(getKey(joinPoint), proceed, cachePut.expire());
-//        }
-//        return proceed;
-//    }
+    @Around("cachePutMethod()")
+    public Object aroundCachePut(ProceedingJoinPoint joinPoint) throws Throwable {
+        if (joinPoint == null) {
+            return null;
+        }
+        Object value = cacheClient.getValue(getKey(joinPoint));
+        if (value != null) {
+            cacheClient.remove(getKey(joinPoint));
+        }
+        Object proceed = joinPoint.proceed();
+        /*从切面值入点获取植入点方法*/
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        /*获取切入点方法*/
+        Method method = signature.getMethod();
+        /*获取方法上的值*/
+        CachePut cacheInsert = method.getAnnotation(CachePut.class);
+        if (cacheInsert != null) {
+            cacheClient.putValue(getKey(joinPoint), proceed, cacheInsert.expire());
+        }
+        return proceed;
+    }
 
+    @Around("cacheDeleteMethod()")
+    public Object aroundCacheDelete(ProceedingJoinPoint joinPoint) throws Throwable {
+        if (joinPoint == null) {
+            return null;
+        }
+        Object proceed = joinPoint.proceed();
+        Object value = cacheClient.getValue(getKey(joinPoint));
+        if (value != null) {
+            cacheClient.remove(getKey(joinPoint));
+        }
+        return proceed;
+    }
 
     /**
      * 根据参数生成cachekey
