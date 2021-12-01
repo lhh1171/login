@@ -1,7 +1,7 @@
 package com.example.demo.dao;
 
 
-import com.example.demo.annotation.Cache;
+
 import com.example.demo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,7 +27,7 @@ public class UserDao {
         return jdbcTemplate.update("delete from user where uid=?",uid);
     }
 
-    @Cache
+
     public User findUserByNameAndPassword(String username,String password){
         final User user =new User();
         String sql="SELECT * FROM user WHERE name=? AND password=?";

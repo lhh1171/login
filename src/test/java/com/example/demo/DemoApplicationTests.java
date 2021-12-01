@@ -36,8 +36,6 @@ class DemoApplicationTests {
     @Test
     public void test() throws Exception {
         userDao.insertUser(new User("111","jdfsa","111","jajdhsf"));
-
         userDao.findUserByNameAndPassword("jdfsa","jajdhsf");
     }
-
 }
